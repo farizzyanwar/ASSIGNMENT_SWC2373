@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container-fullwidth">
+        <h2>User Information</h2>
+        <p><strong>Name:</strong> {{ user_info['displayName'] }}</p>
+        <p><strong>Email:</strong> {{ user_info['emails'][0] }}</p>
+        <p><strong>Org ID:</strong> <span class="org-id">{{ user_info['orgId'] }}</span></p>
+
+        <!-- Option to View Rooms -->
+        <h3>Actions</h3>
+        <a href="{{ url_for('rooms', access_token=access_token) }}">
+            <button>Show Rooms</button>
+        </a>
+
+        <!-- Option to Add a Room -->
+        <h3>Create a New Webex Room</h3>
+        <form method="POST" action="{{ url_for('add_room', access_token=access_token) }}">
+            <textarea name="room_title" rows="2" placeholder="Enter new room title" required></textarea>
+            <button type="submit">Add Room</button>
+        </form>
+
+        <!-- List of Existing Rooms (if applicable) -->
+        {% if rooms %}
+            <h3>Existing Rooms</h3>
+            <ul>
+                {% for room in rooms %}
+                <li><strong>{{ room['title'] }}</strong></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
